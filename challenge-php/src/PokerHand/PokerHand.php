@@ -166,7 +166,7 @@ class PokerHand
         	break;
         	case $this->fourOfAKind(): return 'Four of a Kind';
         	break;
-        	case $this->evilStraight(): return 'Evil Straight';
+        	case $this->evilStraight(): return 'Straight';
         	break;
         	case $this->threeOfAKind(): return 'Three of a Kind';
         	break;

@@ -83,7 +83,7 @@ class PokerHandTest extends TestCase
     public function itCanRankAnEvilStraight()
     {
         $hand = new PokerHand('Ah 2s 3c 4d 5s');
-        $this->assertEquals('Evil Straight', $hand->getRank());
+        $this->assertEquals('Straight', $hand->getRank());
     }
 
     /**
