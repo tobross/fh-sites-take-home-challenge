@@ -82,7 +82,15 @@ class PokerHand
 
 
     protected function royalFlush(){
-    	if (($this->straightFlush()) && ($this->hand[0][0] == 14)){
+    	if ($this->straightFlush() && ($this->hand[0][0] == 14)){
+    		return true;
+    	}else {
+    	return false;
+    	}
+	}
+
+	protected function straightestFlush(){
+    	if (($this->straightFlush()) && ($this->hand[0][0] !== 14)){
     		return true;
     	}else {
     	return false;
@@ -107,14 +115,14 @@ class PokerHand
     	}
     }
 
-    protected function flush(){
+    protected function itsAFlush(){
 	if (count(array_unique($this->hand[1])) === 1){
     	 	return true;
     	 };
     }
 
     protected function straightFlush(){
-    	if ($this->straight() && $this->flush()){
+    	if ($this->straight() && $this->itsAFlush()){
     		return true;
     	}
     		return false;
@@ -179,13 +187,13 @@ class PokerHand
         switch($this){
         	case $this->royalFlush(): return 'Royal Flush';
         	break;
+        	case $this->straightFlush(): return 'Straight Flush';
+        	break;
         	case $this->twoPair(): return 'Two Pair';
         	break;
         	case $this->pair(): return 'One Pair';
         	break;
-        	case $this->flush(); return 'Flush';
-        	break;
-        	case $this->straightFlush(): return 'Straight Flush';
+        	case $this->itsAFlush(); return 'Flush';
         	break;
         	case $this->fullHouse(): return 'Full House';
         	break;
@@ -197,7 +205,7 @@ class PokerHand
         	break;
         	case $this->straight(): return 'Straight';
         	break;
-        	case $this->straight() && $this->flush(): return 'Straight Flush';
+        	case $this->straightestFlush(): return 'Straight Flush';
         	break;
         	default: return 'High Card';
         }
