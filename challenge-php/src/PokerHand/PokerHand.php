@@ -47,8 +47,17 @@ class PokerHand
     	$kinds = array_values(array_count_values($this->hand[0]));
     	$this->hand[2] = $kinds;
 
-    	print_r($this->hand[2][0]);
+    	$this->sortKinds();
+
+    	print_r($this->hand[2]);
     }
+
+    protected function sortKinds(){
+    	usort($this->hand[2], function ($x, $y){
+    		return -( $x <=> $y);
+    });
+    }
+
 
     protected function royalFlush(){
     	if (($this->straightFlush()) && ($this->hand[0][0] == 14)){
@@ -58,8 +67,14 @@ class PokerHand
     	}
 	}
 
+	 protected function threeOfAKind(){
+    	if ($this->hand[2][0] === 3){
+    		return true;
+    	};
+    }
+
     protected function twoPair(){
-    	if (count(array_unique($this->hand[0])) === 3){
+    	if ((count(array_unique($this->hand[0])) === 3) && ($this->hand[2][0] === 2) && ($this->hand[2][1] === 2)){
     		return true;
     	}
     }
@@ -85,23 +100,19 @@ class PokerHand
     }
 
     protected function fullHouse(){
-
+    	if (($this->hand[2][0] === 3) && ($this->hand[2][1] === 2)){
+    		return true;
+    	};
     }
 
     protected function fourOfAKind(){
-    	if ((count(array_unique($this->hand[0])) === 2) && ($this->hand[2][0] === 4)){
+    	if (($this->hand[2][0] === 4) && (count(array_unique($this->hand[0])) === 2)){
     		return true;
     	}
     }
 
     protected function evilStraight(){
 
-    }
-
-    protected function threeOfAKind(){
-    	if (($this->twoPair()) && ($this->hand[2][0] === 3)){
-    		return true;
-    	}
     }
 
     protected function straight(){
