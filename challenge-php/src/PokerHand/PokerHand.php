@@ -50,22 +50,6 @@ class PokerHand
     	$this->sortKinds();
     	$this->sortValues();
 
-    	$straights = array
-    	(
-    		array(14, 2, 3, 4, 5),
-    		array(1, 2, 3, 4, 5),
-    		array(2, 3, 4, 5, 6),
-    		array(3, 4, 5, 6, 7),
-    		array(4, 5, 6, 7, 8),
-    		array(5, 6, 7, 8, 9),
-    		array(6, 7, 8, 9, 10),
-    		array(7, 8, 9, 10, 11),
-    		array(8, 9, 10, 11, 12),
-    		array(9, 10, 11, 12, 13),
-    		array(10, 11, 12, 13, 14)
-    	);
-
-    	    	$this->hand[3] = $straights;
     }
 
     protected function sortKinds(){
@@ -83,14 +67,6 @@ class PokerHand
 
     protected function royalFlush(){
     	if ($this->straightFlush() && ($this->hand[0][0] == 14)){
-    		return true;
-    	}else {
-    	return false;
-    	}
-	}
-
-	protected function straightestFlush(){
-    	if (($this->straightFlush()) && ($this->hand[0][0] !== 14)){
     		return true;
     	}else {
     	return false;
@@ -160,15 +136,6 @@ class PokerHand
     	}
     }
 
-    protected function reverseStraight(){
-    	for ($i = 0; $i < count($this->hand[0]); $i++){
-    		 if ($this->hand[0][$i] !== (($this->hand[0][$i+1])+1)){
-    		 	return false;
-    		 }
-    	}
-    		return true;
-    }
-
     protected function straight(){
 
     	for ($i = 1; $i < count($this->hand[0]); $i++){
@@ -204,8 +171,6 @@ class PokerHand
         	case $this->threeOfAKind(): return 'Three of a Kind';
         	break;
         	case $this->straight(): return 'Straight';
-        	break;
-        	case $this->straightestFlush(): return 'Straight Flush';
         	break;
         	default: return 'High Card';
         }
