@@ -48,14 +48,36 @@ class PokerHand
     	$this->hand[2] = $kinds;
 
     	$this->sortKinds();
+    	$this->sortValues();
 
-    	print_r($this->hand[2]);
+    	$straights = array
+    	(
+    		array(14, 2, 3, 4, 5),
+    		array(1, 2, 3, 4, 5),
+    		array(2, 3, 4, 5, 6),
+    		array(3, 4, 5, 6, 7),
+    		array(4, 5, 6, 7, 8),
+    		array(5, 6, 7, 8, 9),
+    		array(6, 7, 8, 9, 10),
+    		array(7, 8, 9, 10, 11),
+    		array(8, 9, 10, 11, 12),
+    		array(9, 10, 11, 12, 13),
+    		array(10, 11, 12, 13, 14)
+    	);
+
+    	    	$this->hand[3] = $straights;
     }
 
     protected function sortKinds(){
     	usort($this->hand[2], function ($x, $y){
     		return -( $x <=> $y);
-    });
+    	});
+    }
+
+    protected function sortValues(){
+    	usort($this->hand[0], function ($x, $y){
+    			return -( $x <=> $y);
+    	});
     }
 
 
@@ -86,7 +108,7 @@ class PokerHand
     }
 
     protected function flush(){
-	if (  count(array_unique($this->hand[1])) === 1){
+	if (count(array_unique($this->hand[1])) === 1){
     	 	return true;
     	 };
     }
@@ -97,6 +119,15 @@ class PokerHand
     	}
     		return false;
     	
+    }
+
+    protected function straightCheck(){
+    	for ($i = 0; $i < 10; $i++){
+    		if (count(array_intersect($this->hand[3][$i], $this->hand[0])) !== 5){
+    			return false;
+    		}
+    	}
+    	return true;
     }
 
     protected function fullHouse(){
@@ -112,7 +143,22 @@ class PokerHand
     }
 
     protected function evilStraight(){
+    	if (($this->hand[0][0] === 14) && ($this->hand[0][1] === 5)){
+    		$this->hand[0][0] = 1;
+    		$correctHand = [1, 2, 3, 4, 5];
+    		if (count(array_intersect($correctHand, $this->hand[0]) == count($correctHand))){
+    			return true;
+    		}
+    	}
+    }
 
+    protected function reverseStraight(){
+    	for ($i = 0; $i < count($this->hand[0]); $i++){
+    		 if ($this->hand[0][$i] !== (($this->hand[0][$i+1])+1)){
+    		 	return false;
+    		 }
+    	}
+    		return true;
     }
 
     protected function straight(){
@@ -150,6 +196,8 @@ class PokerHand
         	case $this->threeOfAKind(): return 'Three of a Kind';
         	break;
         	case $this->straight(): return 'Straight';
+        	break;
+        	case $this->straight() && $this->flush(): return 'Straight Flush';
         	break;
         	default: return 'High Card';
         }
